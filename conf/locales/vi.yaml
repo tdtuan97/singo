@@ -1,0 +1,11 @@
+Tag:
+  required: "Phải tồn tại và không được để trống"  
+  min: "Không đủ dài"
+  max: "Quá dài"
+Field:
+  Name: "Tên"
+  Nickname: "Biệt danh"
+  UserName: "Tên người dùng"
+  Password: "Mật khẩu"
+  PasswordConfirm: "Mật khẩu xác nhận"
+  

@@ -11,17 +11,17 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-// DB 数据库链接单例
+// DB Database connection singleton
 var DB *gorm.DB
 
-// Database 在中间件中初始化mysql链接
+// Database Initialize mysql connection in middleware
 func Database(connString string) {
-	// 初始化GORM日志配置
+	// Initialize GORM log configuration
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
 			SlowThreshold:             time.Second, // Slow SQL threshold
-			LogLevel:                  logger.Info, // Log level(这里记得根据需求改一下)
+			LogLevel:                  logger.Info, // Log level(Remember to change it according to your needs)
 			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
 			Colorful:                  false,       // Disable color
 		},
@@ -41,10 +41,10 @@ func Database(connString string) {
 		panic(err)
 	}
 
-	//设置连接池
-	//空闲
+	// Set connection pool
+	// Idle
 	sqlDB.SetMaxIdleConns(10)
-	//打开
+	// Open
 	sqlDB.SetMaxOpenConns(20)
 	DB = db
 

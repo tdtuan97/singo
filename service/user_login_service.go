@@ -8,13 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// UserLoginService 管理用户登录的服务
+// UserLoginService Manage user login service
 type UserLoginService struct {
 	UserName string `form:"user_name" json:"user_name" binding:"required,min=3,max=30"`
 	Password string `form:"password" json:"password" binding:"required,min=6,max=40"`
 }
 
-// setSession 设置session
+// setSession Set session
 func (service *UserLoginService) setSession(c *gin.Context, user model.User) {
 	s := sessions.Default(c)
 	s.Clear()
@@ -22,19 +22,19 @@ func (service *UserLoginService) setSession(c *gin.Context, user model.User) {
 	s.Save()
 }
 
-// Login 用户登录函数
+// Login User login function
 func (service *UserLoginService) Login(c *gin.Context) serializer.Response {
 	var user model.User
 
 	if err := model.DB.Where("user_name = ?", service.UserName).First(&user).Error; err != nil {
-		return serializer.ParamErr("账号或密码错误", nil)
+		return serializer.ParamErr("Username or password error", nil)
 	}
 
 	if user.CheckPassword(service.Password) == false {
-		return serializer.ParamErr("账号或密码错误", nil)
+		return serializer.ParamErr("Username or password error", nil)
 	}
 
-	// 设置session
+	// Set session
 	service.setSession(c, user)
 
 	return serializer.BuildUserResponse(user)
