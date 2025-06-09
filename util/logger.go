@@ -7,29 +7,29 @@ import (
 )
 
 const (
-	// LevelError 错误
+	// LevelError Error
 	LevelError = iota
-	// LevelWarning 警告
+	// LevelWarning Warning
 	LevelWarning
-	// LevelInformational 提示
+	// LevelInformational Information
 	LevelInformational
-	// LevelDebug 除错
+	// LevelDebug Debug
 	LevelDebug
 )
 
 var logger *Logger
 
-// Logger 日志
+// Logger Logger
 type Logger struct {
 	level int
 }
 
-// Println 打印
+// Println Print
 func (ll *Logger) Println(msg string) {
 	fmt.Printf("%s %s", time.Now().Format("2006-01-02 15:04:05 -0700"), msg)
 }
 
-// Panic 极端错误
+// Panic Critical error
 func (ll *Logger) Panic(format string, v ...interface{}) {
 	if LevelError > ll.level {
 		return
@@ -39,7 +39,7 @@ func (ll *Logger) Panic(format string, v ...interface{}) {
 	os.Exit(0)
 }
 
-// Error 错误
+// Error Error
 func (ll *Logger) Error(format string, v ...interface{}) {
 	if LevelError > ll.level {
 		return
@@ -48,7 +48,7 @@ func (ll *Logger) Error(format string, v ...interface{}) {
 	ll.Println(msg)
 }
 
-// Warning 警告
+// Warning Warning
 func (ll *Logger) Warning(format string, v ...interface{}) {
 	if LevelWarning > ll.level {
 		return
@@ -57,7 +57,7 @@ func (ll *Logger) Warning(format string, v ...interface{}) {
 	ll.Println(msg)
 }
 
-// Info 信息
+// Info Information
 func (ll *Logger) Info(format string, v ...interface{}) {
 	if LevelInformational > ll.level {
 		return
@@ -66,7 +66,7 @@ func (ll *Logger) Info(format string, v ...interface{}) {
 	ll.Println(msg)
 }
 
-// Debug 校验
+// Debug Debug
 func (ll *Logger) Debug(format string, v ...interface{}) {
 	if LevelDebug > ll.level {
 		return
@@ -75,7 +75,7 @@ func (ll *Logger) Debug(format string, v ...interface{}) {
 	ll.Println(msg)
 }
 
-// BuildLogger 构建logger
+// BuildLogger Build logger
 func BuildLogger(level string) {
 	intLevel := LevelError
 	switch level {
@@ -94,7 +94,7 @@ func BuildLogger(level string) {
 	logger = &l
 }
 
-// Log 返回日志对象
+// Log Return logger instance
 func Log() *Logger {
 	if logger == nil {
 		l := Logger{

@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Response 基础序列化器
+// Response Base serializer
 type Response struct {
 	Code  int         `json:"code"`
 	Data  interface{} `json:"data,omitempty"`
@@ -14,62 +14,62 @@ type Response struct {
 	Error string      `json:"error,omitempty"`
 }
 
-// TrackedErrorResponse 有追踪信息的错误响应
+// TrackedErrorResponse Error response with tracking information
 type TrackedErrorResponse struct {
 	Response
 	TrackID string `json:"track_id"`
 }
 
-// 三位数错误编码为复用http原本含义
-// 五位数错误编码为应用自定义错误
-// 五开头的五位数错误编码为服务器端错误，比如数据库操作失败
-// 四开头的五位数错误编码为客户端错误，有时候是客户端代码写错了，有时候是用户操作错误
+// Three-digit error codes reuse HTTP original meanings
+// Five-digit error codes are application custom errors
+// Five-digit error codes starting with 5 are server-side errors, such as database operation failures
+// Five-digit error codes starting with 4 are client-side errors, sometimes due to client code errors, sometimes due to user operation errors
 const (
-	// CodeCheckLogin 未登录
+	// CodeCheckLogin Not logged in
 	CodeCheckLogin = 401
-	// CodeNoRightErr 未授权访问
+	// CodeNoRightErr Unauthorized access
 	CodeNoRightErr = 403
-	// CodeDBError 数据库操作失败
+	// CodeDBError Database operation failed
 	CodeDBError = 50001
-	// CodeEncryptError 加密失败
+	// CodeEncryptError Encryption failed
 	CodeEncryptError = 50002
-	//CodeParamErr 各种奇奇怪怪的参数错误
+	// CodeParamErr Various parameter errors
 	CodeParamErr = 40001
 )
 
-// CheckLogin 检查登录
+// CheckLogin Check login status
 func CheckLogin() Response {
 	return Response{
 		Code: CodeCheckLogin,
-		Msg:  "未登录",
+		Msg:  "Not logged in",
 	}
 }
 
-// Err 通用错误处理
+// Err Common error handling
 func Err(errCode int, msg string, err error) Response {
 	res := Response{
 		Code: errCode,
 		Msg:  msg,
 	}
-	// 生产环境隐藏底层报错
+	// Hide underlying errors in production environment
 	if err != nil && gin.Mode() != gin.ReleaseMode {
 		res.Error = fmt.Sprintf("%+v", err)
 	}
 	return res
 }
 
-// DBErr 数据库操作失败
+// DBErr Database operation failed
 func DBErr(msg string, err error) Response {
 	if msg == "" {
-		msg = "数据库操作失败"
+		msg = "Database operation failed"
 	}
 	return Err(CodeDBError, msg, err)
 }
 
-// ParamErr 各种参数错误
+// ParamErr Various parameter errors
 func ParamErr(msg string, err error) Response {
 	if msg == "" {
-		msg = "参数错误"
+		msg = "Parameter error"
 	}
 	return Err(CodeParamErr, msg, err)
 }

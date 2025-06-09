@@ -9,10 +9,10 @@ import (
 )
 
 func main() {
-	// 从配置文件读取配置
+	// Load configuration from config file
 	conf.Init()
 
-	// 装载路由
+	// Load routes
 	gin.SetMode(os.Getenv("GIN_MODE"))
 	r := server.NewRouter()
 	r.Run(":3000")
