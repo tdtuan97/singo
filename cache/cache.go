@@ -15,9 +15,10 @@ var RedisClient *redis.Client
 // Redis Initialize redis connection in middleware
 func Redis() {
 	db, _ := strconv.ParseUint(os.Getenv("REDIS_DB"), 10, 64)
+	addr := os.Getenv("REDIS_HOST") + ":" + os.Getenv("REDIS_PORT")
 	client := redis.NewClient(&redis.Options{
-		Addr:       os.Getenv("REDIS_ADDR"),
-		Password:   os.Getenv("REDIS_PW"),
+		Addr:       addr,
+		Password:   os.Getenv("REDIS_PASSWORD"),
 		DB:         int(db),
 		MaxRetries: 1,
 	})

@@ -4,5 +4,5 @@ package model
 
 func migration() {
 	// Automatic migration mode
-	_ = DB.AutoMigrate(&User{})
+	//_ = DB.AutoMigrate(&User{})
 }
